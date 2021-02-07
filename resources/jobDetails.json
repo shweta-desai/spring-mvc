@@ -1,1 +1,32 @@
-
+[
+	{
+		"jobName" : "OneTimeJobPrinter",
+		"jobTitle" : "One Time Job Printer to print jobs after immediate startup",
+		"jobAction" : "com.job.management.job.JobAction",
+		"jobArguments" : "OneTimeJobPrinter",
+		"scheduleType" : "ONCE",
+		"activeFlg" : "1",
+		"jobPriority" : "10",
+		"jobParams" : {}
+	},
+	{
+		"jobName" : "HourlyJobPrinter",
+		"jobTitle" : "Hourly Job Printer to print jobs details in working hours",
+		"jobAction" : "com.job.management.job.JobAction",
+		"jobArguments" : "HourlyJobPrinter",
+		"scheduleType" : "REPEATED",
+		"activeFlg" : "1",
+		"jobPriority" : "10",
+		"jobParams" : {"byDay" : "Mon,Tue,WED,Thu,Fri", "byHour" : "9,10,11,12,13,14,15,16,17,18"}
+	},
+	{
+		"jobName" : "WeekendHourlyJobPrinter",
+		"jobTitle" : "Weekend Job Printer to print jobs details on hourly basis during the weekend",
+		"jobAction" : "com.job.management.job.JobAction",
+		"jobArguments" : "WeekendHourlyJobPrinter",
+		"scheduleType" : "REPEATED",
+		"activeFlg" : "1",
+		"jobPriority" : "5",
+		"jobParams" : {"byDay" : "Sat,Sun"}
+	}
+]

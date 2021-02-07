@@ -1,41 +1,42 @@
-package com.job.management.entity;
+package com.job.management.job;
 
-public class JobParam {
-	private String byMonth;
-	private String byDay;
-	private String byHour;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
 
-	public JobParam() {}
-	
-	public String getByMonth() {
-		return byMonth;
-	}
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-	public void setByMonth(String byMonth) {
-		this.byMonth = byMonth;
-	}
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import com.job.management.entity.Job;
+import com.job.management.invoker.JobInvoker;
 
-	public JobParam(String byMonth, String byDay, String byHour) {
-		super();
-		this.byMonth = byMonth;
-		this.byDay = byDay;
-		this.byHour = byHour;
-	}
+public class JobAction {
 
-	public String getByDay() {
-		return byDay;
-	}
+	private static final Logger LOGGER = LoggerFactory.getLogger(JobInvoker.class);
 
-	public void setByDay(String byDay) {
-		this.byDay = byDay;
-	}
+	public static void main(String[] args) {
+		String csvFile = "resources/jobDetails.json";
+		try {
+			LOGGER.info("Job Action execution started : job[{}]", args.length > 0 ? args[0] : null);
+			Gson gsonParser = new Gson();
 
-	public String getByHour() {
-		return byHour;
-	}
+			String content = new String(Files.readAllBytes(Paths.get(csvFile)));
+			LOGGER.debug("*****************************************************************************");
+			LOGGER.debug(content);
+			LOGGER.debug("*****************************************************************************");
+			List<Job> jobs = gsonParser.fromJson(content, new TypeToken<ArrayList<Job>>() {
+			}.getType());
+			LOGGER.info("Number of jobs loaded into memory: {} ", jobs.size());
 
-	public void setByHour(String byHour) {
-		this.byHour = byHour;
+			LOGGER.info("Job Action execution completed : job[{}]", args.length > 0 ? args[0] : null);
+		} catch (IOException ex) {
+			LOGGER.error("ERROR:", ex);
+		}
+
 	}
 
 }

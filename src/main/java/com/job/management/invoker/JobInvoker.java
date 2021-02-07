@@ -1,41 +1,40 @@
-package com.job.management.entity;
+package com.job.management.invoker;
 
-public class JobParam {
-	private String byMonth;
-	private String byDay;
-	private String byHour;
+import java.util.Timer;
+import java.util.TimerTask;
 
-	public JobParam() {}
-	
-	public String getByMonth() {
-		return byMonth;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.job.management.process.JobProcessor;
+
+public class JobInvoker {
+
+	private static final Logger LOGGER = LoggerFactory.getLogger(JobInvoker.class);
+	private static final long REPEAT_INTERVAL_MIN = 5;
+
+	public static void main(String[] args) {
+		try {
+			LOGGER.info("Job Invoker Launched");
+			JobProcessor jobProcessor = new JobProcessor();
+
+			Timer timer = new Timer();
+			timer.schedule(new TimerTask() {
+
+				@Override
+				public void run() {
+					try {
+						jobProcessor.processJobs();
+					} catch (Exception ex) {
+						LOGGER.error("ERROR:", ex);
+					}
+
+				}
+			}, 0, REPEAT_INTERVAL_MIN * 60 * 1000);
+
+			LOGGER.info("Job Invoker Completed Execution..!");
+		} catch (Exception ex) {
+			LOGGER.error("Exception ", ex);
+		}
 	}
-
-	public void setByMonth(String byMonth) {
-		this.byMonth = byMonth;
-	}
-
-	public JobParam(String byMonth, String byDay, String byHour) {
-		super();
-		this.byMonth = byMonth;
-		this.byDay = byDay;
-		this.byHour = byHour;
-	}
-
-	public String getByDay() {
-		return byDay;
-	}
-
-	public void setByDay(String byDay) {
-		this.byDay = byDay;
-	}
-
-	public String getByHour() {
-		return byHour;
-	}
-
-	public void setByHour(String byHour) {
-		this.byHour = byHour;
-	}
-
 }
